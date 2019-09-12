@@ -1,17 +1,19 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const logger = require("morgan");
 
 const mongoose = require("mongoose");
 const hbs = require("hbs");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var authRouter = require("./routes/auth");
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const authRouter = require("./routes/auth");
 
-var app = express();
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+
+const app = express();
 
 hbs.registerPartials(__dirname + "/views/partials");
 
@@ -31,6 +33,21 @@ mongoose
     console.log(err);
   });
 
+//Session middleware. This will take care of storing the session in mongo,
+//and
+app.use(
+  session({
+    secret: "wow much secret, very secret", //encrypts cookie (so it hashes)
+    cookie: { maxAge: 10000 }, // options for cookie storage
+    resave: false, //don't save session if unmodified
+    saveUninitialized: false, // don't create session until something stored
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      ttl: 24 * 60 * 60 // 1 day
+    })
+  })
+);
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
@@ -38,12 +55,10 @@ app.set("view engine", "hbs");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-
 app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const saltRounds = 10; // cost factor for producing the hash
+const saltRounds = 1; // cost factor for producing the hash
 
 // With "salt round" they actually mean the cost factor. The cost factor controls how much time is needed to calculate a single BCrypt hash. The higher the cost factor, the more hashing rounds are done. Increasing the cost factor by 1 doubles the necessary time. The more time is necessary, the more difficult is brute-forcing.
 // The salt is a random value, and should differ for each calculation, so the result should hardly ever be the same, even for equal passwords.
@@ -10,7 +10,6 @@ const saltRounds = 10; // cost factor for producing the hash
 
 // "/users/new"
 router.post("/register", (req, res) => {
-  //
   const { name, age, mood, password } = req.body;
 
   bcrypt
@@ -27,50 +26,34 @@ router.post("/register", (req, res) => {
       res.redirect("/users");
     })
     .catch(err => {
-      console.log("err", err);
+      res.send("error");
     });
-
-  //first we will encrypt the plain text password
-  //then we create user (storing in db), with hashed pw
 });
 
 router.post("/login", (req, res, next) => {
-  debugger;
-  // const name = req.body.name;
-  // const password = req.body.password;
   const { name, password } = req.body;
-  debugger;
-  User.findOne({ name })
-    .then(user => {
-      debugger;
-      if (!user) {
-        debugger;
-        res.redirect("/users");
-        return false;
-      } else {
-        //first arg, is client
-        //second arg is from db
-        debugger;
-        return bcrypt.compare(req.body.password, user.password); //true or false
-        //passed down to next .then
+
+  const getUser = async () => {
+    debugger;
+    try {
+      const user = await User.findOne({ name });
+      if (user) {
+        if (await bcrypt.compare(password, user.password)) {
+          const session = req.session;
+          session.user = user;
+
+          debugger;
+          res.send("Login success");
+        } else {
+          res.send("Incorrect password");
+        }
       }
-    })
-    .then(passwordCorrect => {
-      debugger;
-      if (passwordCorrect) {
-        debugger;
-        res.send("You are logged in ");
-        return;
-      } else {
-        debugger;
-        res.send("Credentials don't match.");
-        return;
-      }
-    })
-    .catch(err => {
-      debugger;
-      console.log("err", err);
-    });
+    } catch (err) {
+      next(new Error(err));
+    }
+  };
+
+  getUser();
 });
 
 module.exports = router;
