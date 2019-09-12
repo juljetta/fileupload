@@ -1,0 +1,20 @@
+<h1>All the users</h1>
+<ul>
+    {{#each users}}
+    <li>{{this.name}}</li>
+    <li>{{this.age}}</li>
+    <li>{{this.mood}}</li>
+
+    <li><a href="/users/update/{{this._id}}">Edit</a></li>
+    <li><a href="/users/delete/{{this._id}}">Delete</a></li>
+    {{/each}}
+</ul>
+
+<h1>Sign up!</h1>
+<form action="/users/create" method="post">
+    <input type="text" placeholder="Name" name="name">
+    <input type="number" placeholder="Age" name="age">
+    <input type="text" placeholder="Mood" name="mood">
+    <input type="password" placeholder="Password" name="password">
+    <button type="submit">Create user</button>
+</form>
