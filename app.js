@@ -9,6 +9,7 @@ const hbs = require("hbs");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
 const authorisationRouter = require("./routes/authorisation");
 
 const session = require("express-session");
@@ -58,16 +59,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 //authorisation is first callback and checks if
-//the session is stored
-
-app.get("/profile", authorisationRouter, (req, res) => {
-  res.render("profile", { user: req.session.currentUser });
-});
+//the session is stored.
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
-
+app.use("/profile", authenticateRouter, profileRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
