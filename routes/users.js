@@ -7,6 +7,7 @@ const User = require("../models/User");
 
 //"/users"
 router.get("/", function(req, res, next) {
+  debugger;
   User.find()
     .then(users => {
       res.render("userList", { users: users });

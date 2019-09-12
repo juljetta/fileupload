@@ -9,13 +9,12 @@ const hbs = require("hbs");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const authorisationRouter = require("./routes/authorisation");
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
 const app = express();
-
-hbs.registerPartials(__dirname + "/views/partials");
 
 const bodyParser = require("body-parser");
 
@@ -51,11 +50,19 @@ app.use(
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
+hbs.registerPartials(__dirname + "/views/partials");
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+//authorisation is first callback and checks if
+//the session is stored
+
+app.get("/profile", authorisationRouter, (req, res) => {
+  res.render("profile", { user: req.session.currentUser });
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

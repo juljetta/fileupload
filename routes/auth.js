@@ -10,7 +10,6 @@ const saltRounds = 10; // cost factor for producing the hash
 
 // "/users/new"
 router.post("/register", (req, res) => {
-  //
   const { name, age, mood, password } = req.body;
 
   bcrypt
@@ -35,34 +34,33 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res, next) => {
-  debugger;
   // const name = req.body.name;
   // const password = req.body.password;
+  let currentUser;
   const { name, password } = req.body;
-  debugger;
+
   User.findOne({ name })
     .then(user => {
-      debugger;
       if (!user) {
-        debugger;
         res.redirect("/users");
         return false;
       } else {
         //first arg, is client
         //second arg is from db
-        debugger;
+        currentUser = user;
         return bcrypt.compare(req.body.password, user.password); //true or false
         //passed down to next .then
       }
     })
     .then(passwordCorrect => {
-      debugger;
       if (passwordCorrect) {
-        debugger;
-        res.send("You are logged in ");
+        //storing session in our database
+        //and set cookie in client.
+        const session = req.session;
+        session.currentUser = currentUser;
+        res.redirect("/profile");
         return;
       } else {
-        debugger;
         res.send("Credentials don't match.");
         return;
       }
