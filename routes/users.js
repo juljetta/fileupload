@@ -16,17 +16,6 @@ router.get("/", function(req, res, next) {
     });
 });
 
-// "/users/new"
-router.post("/create", (req, res) => {
-  User.create(req.body)
-    .then(() => {
-      res.redirect("/users");
-    })
-    .catch(err => {
-      res.send("error");
-    });
-});
-
 router.get("/update/:id", (req, res) => {
   //Find user by id
   //res show form
