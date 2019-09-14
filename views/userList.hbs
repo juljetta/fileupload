@@ -22,9 +22,11 @@
 
 
 <form action="/auth/login" method="post">
-    <input type="text" placeholder="Name" name="name">
-    <input type="password" placeholder="Password" name="password">
+    <input type="text" placeholder="Name" name="name" required>
+    <input type="password" placeholder="Password" name="password" required>
     <button type="submit">Login user</button>
 </form>
 
-<h1> {{error}} !!!!!!</h1>
+{{#if error}}
+<h1>{{error}}</h1>
+{{/if}}

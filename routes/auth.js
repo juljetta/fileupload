@@ -25,7 +25,7 @@ router.post("/register", async (req, res, next) => {
       req.session.user = user;
       res.redirect("/profile");
     } else {
-      // router.locals.error = "Use already exists";
+      req.app.locals.error = "Put in password and name";
       res.redirect("/users");
     }
   } catch (err) {
