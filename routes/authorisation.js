@@ -3,10 +3,10 @@ const router = express.Router();
 
 //Our custom middleware function.
 router.use("/", (req, res, next) => {
-  if (req.session.currentUser) {
+  if (req.session.user) {
     next();
   } else {
-    res.send("You are not logged in");
+    res.redirect("/users");
   }
 });
 

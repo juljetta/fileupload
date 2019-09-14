@@ -17,10 +17,6 @@ const MongoStore = require("connect-mongo")(session);
 
 const app = express();
 
-const bodyParser = require("body-parser");
-
-app.use(bodyParser.urlencoded({ extended: false }));
-
 mongoose
   .connect("mongodb://localhost:27017/mytestapp", {
     useNewUrlParser: true,
@@ -38,12 +34,12 @@ mongoose
 app.use(
   session({
     secret: "wow much secret, very secret", //encrypts cookie (so it hashes)
-    cookie: { maxAge: 10000 }, // options for cookie storage
+    cookie: { maxAge: 24 * 60 * 60 }, // options for cookie storage
     resave: false, //don't save session if unmodified
     saveUninitialized: false, // don't create session until something stored
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
-      ttl: 24 * 60 * 60 // 1 day
+      ttl: 24 * 60 * 60 // 1 day expiration of sesh
     })
   })
 );
@@ -64,10 +60,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
-
 //before we reach profileRouter function, we use our custom middleware
 app.use("/profile", authorisationRouter, profileRouter);
 // catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   next(createError(404));
 });
