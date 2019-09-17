@@ -17,6 +17,20 @@ router.get("/", function(req, res, next) {
     });
 });
 
+// "/users/all";
+router.get("/all", (req, res) => {
+  debugger;
+  User.find()
+    .then(users => {
+      debugger;
+      res.status(200).json(users);
+    })
+    .catch(err => {
+      debugger;
+      res.status(500).json(err);
+    });
+});
+
 router.get("/update/:id", (req, res) => {
   //Find user by id
   //res show form
