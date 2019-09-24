@@ -5,6 +5,7 @@ window.onload = function() {
     axios
       .get("/users/all")
       .then(response => {
+        debugger;
         response.data.forEach(user => {
           const list = document.createElement("ul");
           list.innerHTML = `<li>${user.name}</li> `;
@@ -12,6 +13,7 @@ window.onload = function() {
         });
       })
       .catch(err => {
+        debugger;
         console.log(err);
       });
   };

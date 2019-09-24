@@ -1,1 +1,19 @@
 <h1>Hello {{user.name}}</h1>
+
+<h1>Add a post</h1>
+
+<form action="/posts" method="post">
+    <input type="text" placeholder="Title" name="title">
+    <input type="text" placeholder="Content" name="content">
+    <input type="submit">
+</form>
+
+
+<h1>My posts</h1>
+
+{{#each user.posts}}
+<ul>
+    <li>{{this.title}}</li>
+    <li>{{this.content}}</li>
+</ul>
+{{/each}}

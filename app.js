@@ -11,14 +11,16 @@ const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const authorisationRouter = require("./routes/authorisation");
-
+const postsRouter = require("./routes/posts");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
 const app = express();
 
+require("dotenv").config();
+
 mongoose
-  .connect("mongodb://localhost:27017/mytestapp", {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -28,6 +30,9 @@ mongoose
   .catch(err => {
     console.log(err);
   });
+
+// mongoose.set("useCreateIndex", true);
+// mongoose.set("useFindAndModify", false);
 
 //Session middleware. This will take care of storing the session in mongo,
 //and
@@ -62,6 +67,9 @@ app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 //before we reach profileRouter function, we use our custom middleware
 app.use("/profile", authorisationRouter, profileRouter);
+
+app.use("/posts", postsRouter);
+
 // catch 404 and forward to error handler
 
 app.use(function(req, res, next) {
