@@ -49,8 +49,18 @@ router.post("/", (req, res) => {
     });
 });
 
+router.get("/", (req, res) => {
+  Post.find()
+    .populate("author")
+    .then(posts => {
+      debugger;
+      res.render("posts", { posts: posts });
+    });
+});
 // create get request to get all posts
 // populate the author of post
 // show post and name author in hbs
+
+// don't forget to make a hbs file
 
 module.exports = router;

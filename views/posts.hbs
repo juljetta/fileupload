@@ -1,0 +1,12 @@
+<h1>All the posts</h1>
+
+
+{{#each posts}}
+
+<ul>
+    <li>Title: {{this.title}}</li>
+    <li>Content: {{this.content}}</li>
+    <li>Made by: {{this.author.name}}</li>
+</ul>
+
+{{/each}}
