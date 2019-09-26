@@ -22,9 +22,7 @@ Create a route where we a user can upload a photo.
 
 # Step two
 
-Create a picture model that has the following properties.
-
-The schema should look a bit like so.
+Create a picture model. The schema should look a bit like so.
 
 ```
 const pictureSchema = new Schema({
@@ -39,16 +37,16 @@ const pictureSchema = new Schema({
 
 # Step three
 
-Update the user model so the user has a relation to the picture.
+Update the user model so the user has a relation to the picture. This will be a one-to-many relation.
 
 # Step four
 
 Now the database structure is set up you can start defining the appropriate routes.
 
 1. There should be a route to post a new photo to. This route should store the photo in the public directory. Inject a new document in de picture collection and update the user.
-2. There should be a route where everyone can see all pictures/
+2. There should be a route where everyone can see all photo's.
 3. There should be a route where a user see his/her own photo's.
 
 # Step five (optional)
 
-Make a route where users can see other user's pictures and profile.
+Make a route where users can see other user's profile and pictures.
