@@ -29,7 +29,7 @@ router.post("/register", async (req, res, next) => {
       res.redirect("/users");
     }
   } catch (err) {
-    next(new Error("Oeps something went wrong"));
+    next(err);
 
     // next(err);
   }

@@ -18,8 +18,13 @@
 </ul>
 {{/each}}
 
+<h1>Upload file</h1>
 
-<form action="/profile-image" method="POST" enctype="multipart/form-data">
-    <input type="file" name="avatar" />
+<form action="/profile/edit/img" method="POST" enctype="multipart/form-data">
+    <input type="file" name="profile" />
     <input type="submit">
 </form>
+{{#if user.profileImg}}
+<img src="/images/profile/{{user.profileImg}}" alt="">
+
+{{/if}}

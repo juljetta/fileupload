@@ -11,7 +11,8 @@ const userSchema = new Schema({
   mood: String,
   password: { type: String, required: true },
   //user can have many posts (one to manys)
-  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }]
+  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+  profileImg: String
 });
 
 const User = mongoose.model("User", userSchema);
