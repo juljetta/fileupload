@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require("../models/User");
 
 router.get("/", (req, res) => {
-  debugger;
   User.findById(req.session.user._id)
     .populate("posts") // here mongoose also queries the posts collection
     .then(user => {
