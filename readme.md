@@ -17,7 +17,7 @@ Create a route where we a user can upload a photo.
     <input type="text" name="name">
     <input type="file" name="photo">
     <input type="submit" value="Save">
-  </form>
+</form>
 ```
 
 # Step two
