@@ -56,4 +56,15 @@ router.get("/delete/:id", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+  User.findById(req.params.id)
+    .populate("photos")
+    .then(user => {
+      res.render("profile", { user: user });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+
 module.exports = router;

@@ -7,6 +7,7 @@ var upload = multer({ dest: __dirname + "/../public/images/profile" });
 router.get("/", (req, res) => {
   User.findById(req.session.user._id)
     .populate("posts") // here mongoose also queries the posts collection
+    .populate("photos")
     .then(user => {
       debugger;
       res.render("profile", { user: user });

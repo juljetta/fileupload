@@ -14,6 +14,8 @@ const authorisationRouter = require("./routes/authorisation");
 const postsRouter = require("./routes/posts");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const photosRouter = require("./routes/photos");
+// const allPhotos = require("./routes/photos/all");
 
 const app = express();
 
@@ -66,6 +68,8 @@ app.use("/auth", authRouter);
 app.use("/profile", authorisationRouter, profileRouter);
 
 app.use("/posts", postsRouter);
+app.use("/photos", photosRouter);
+// app.use("/photos/all", allPhotos);
 
 // catch 404 and forward to error handler
 
